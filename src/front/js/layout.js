@@ -3,14 +3,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
-import { Cripto } from "./pages/cripto";
+import { Bitcoin } from "./pages/bitcoin";
 import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import { Faq } from "./pages/faq";
 import { Ley20393 } from "./pages/ley20393"; // Add this import
 import injectContext from "./store/appContext";
-import { Money } from "./pages/money";
+import { Dollar } from "./pages/dollar";
+import { Instructions } from "./pages/instructions";
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
@@ -27,10 +26,11 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
+                        <Route element={<Bitcoin />} path="/bitcoin" />
+                        <Route element={<Dollar />} path="/Dollar" />
+                        <Route element={<Instructions />} path="/instructions" />
                         <Route element={<Faq />} path="/faq" />
-                        <Route element={<Ley20393 />} path="/ley20393" /> {/* Add this route */}
+                        <Route element={<Ley20393 />} path="/ley20393" /> 
                         <Route path="*" element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
