@@ -3,17 +3,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
+import { Cripto } from "./pages/cripto";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Faq } from "./pages/faq";
 import { Ley20393 } from "./pages/ley20393"; // Add this import
 import injectContext from "./store/appContext";
+import { Money } from "./pages/money";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { Carousel } from "./component/carousel";
-import { Games } from "./component/games";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -25,8 +25,6 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
-                    <Carousel/>
-                    <Games/>
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
