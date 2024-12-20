@@ -12,8 +12,8 @@ import { Ley20393 } from "./pages/ley20393"; // Add this import
 import injectContext from "./store/appContext";
 import { Money } from "./pages/money";
 
-import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+import { Navbar } from "./component/navbar";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";

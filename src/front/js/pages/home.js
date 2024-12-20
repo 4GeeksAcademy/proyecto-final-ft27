@@ -52,6 +52,7 @@ export const Home = () => {
                     </button>
                 </div>
             </div>
+            
 
             <div className="container mt-4 bg-light p-3 rounded">
                 <div className="d-flex justify-content-between gap-3">
