@@ -10,10 +10,10 @@ import { Faq } from "./pages/faq";
 import { Ley20393 } from "./pages/ley20393"; // Add this import
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Carousel } from "./component/carousel";
 import { Games } from "./component/games";
+import { Navbar } from "./component/navbar";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";

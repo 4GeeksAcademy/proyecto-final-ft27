@@ -8,8 +8,6 @@ export const Home = () => {
 
     return (
         <div className="container">
-            <h1 className="text-center mt-5">ProyectoFinal</h1>
-            
             <div className="row mt-4">
                 <div className="col-lg-6">
                     <Link to="/faq" className="btn btn-primary w-100">
