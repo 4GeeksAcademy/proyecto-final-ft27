@@ -91,6 +91,11 @@ export const Home = () => {
 
             <div className="container">
                 <div className="row mt-4">
+                    <div className="col-12 mb-3">
+                        <Link to="/results" className="btn btn-primary w-100">
+                            Resultados
+                        </Link>
+                    </div>
                     <div className="col-lg-6">
                         <Link to="/faq" className="btn btn-primary w-100">
                             Preguntas frecuentes

@@ -13,6 +13,7 @@ import { Instructions } from "./pages/instructions";
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
+import { Results } from "./pages/resultados";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -29,6 +30,7 @@ const Layout = () => {
                         <Route element={<Bitcoin />} path="/bitcoin" />
                         <Route element={<Dollar />} path="/Dollar" />
                         <Route element={<Instructions />} path="/instructions" />
+                        <Route element={<Results />} path="/results" />
                         <Route element={<Faq />} path="/faq" />
                         <Route element={<Ley20393 />} path="/ley20393" /> 
                         <Route path="*" element={<h1>Not found!</h1>} />
