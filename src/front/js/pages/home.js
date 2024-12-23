@@ -8,49 +8,41 @@ export const Home = () => {
 
     return (
         <>
-            <div className="container mt-5">
-                <div id="imageCarousel" className="carousel slide" data-bs-ride="carousel">
-                    <div className="carousel-indicators">
-                        <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-                        <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <div id="carouselExample" className="carousel slide" data-bs-ride="carousel">
+                <div className="carousel-inner">
+                    <div className="carousel-item active">
+                        <img
+                            src="https://caracoltv.brightspotcdn.com/dims4/default/6797e37/2147483647/strip/true/crop/1280x720+0+0/resize/800x450!/quality/75/?url=http%3A%2F%2Fcaracol-brightspot.s3.us-west-2.amazonaws.com%2F89%2F34%2F4c37b7e04e58bf5019aed2638b6e%2Fballs-6077901-1280-1.jpg"
+                            className="d-block w-100 carousel-img"
+                            alt="Imagen 1"
+                        />
                     </div>
-
-                    <div className="carousel-inner">
-                        <div className="carousel-item active">
-                            <img
-                                src="https://www.loteria.cl/absolutebm/banners/bannerhome_sinpozonavidad.gif"
-                                className="d-block w-100"
-                                alt="Banner 1"
-                            />
-                        </div>
-                        <div className="carousel-item">
-                            <img
-                                src="https://www.loteria.cl/absolutebm/banners/banners%202023/esta-semana-banner_mega_navidad2.gif"
-                                className="d-block w-100"
-                                alt="Banner 2"
-                            />
-                        </div>
+                    <div className="carousel-item">
+                        <img
+                            src="https://www.loteriamanises.com/blog/wp-content/uploads/2017/10/paises-que-prohiben-los-juegos-de-azar.jpg"
+                            className="d-block w-100 carousel-img"
+                            alt="Imagen 2"
+                        />
                     </div>
-
-                    <button
-                        className="carousel-control-prev"
-                        type="button"
-                        data-bs-target="#imageCarousel"
-                        data-bs-slide="prev"
-                    >
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Anterior</span>
-                    </button>
-                    <button
-                        className="carousel-control-next"
-                        type="button"
-                        data-bs-target="#imageCarousel"
-                        data-bs-slide="next"
-                    >
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Siguiente</span>
-                    </button>
                 </div>
+                <button
+                    className="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExample"
+                    data-bs-slide="prev"
+                >
+                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Previous</span>
+                </button>
+                <button
+                    className="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExample"
+                    data-bs-slide="next"
+                >
+                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span className="visually-hidden">Next</span>
+                </button>
             </div>
 
 

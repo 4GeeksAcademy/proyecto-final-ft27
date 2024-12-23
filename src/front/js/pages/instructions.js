@@ -18,7 +18,7 @@ export const Instructions = () => {
                             Selecciona los números que deseas en cada tablero. Puedes elegir un máximo de <strong>14 números</strong> por tablero.
                         </li>
                         <li>
-                            Si no sabes que numeros escoger, puedes usar el botón de <strong className="text-primary">Selección Aleatoria</strong> para que el sistema elija 14 números al azar por ti.
+                            Si no sabes que numeros escoger, puedes usar el botón de <strong className="text-warning">Selección Aleatoria</strong> para que el sistema elija 14 números al azar por ti.
                         </li>
                         <li>
                             Si te equivocas, utiliza el botón <strong className="text-danger">Borrar Selección</strong> para reiniciar tus elecciones y comenzar de nuevo.

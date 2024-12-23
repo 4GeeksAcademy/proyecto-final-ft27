@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 export const Bitcoin = ({ onSelectionChange }) => {
     const [selectedBitcoin, setSelectedBitcoin] = useState([]);
 
@@ -35,15 +36,8 @@ export const Bitcoin = ({ onSelectionChange }) => {
             return (
                 <button
                     key={`bitcoin-${id}`}
-                    className={`btn ${isSelected ? "btn-success" : "btn-primary"} shadow`}
-                    style={{
-                        width: "60px",
-                        height: "60px",
-                        borderRadius: "50%",
-                        fontSize: "18px",
-                        color: "white",
-                        margin: "5px",
-                    }}
+                    className={`btn btn-primary rounded-circle ${isSelected ? "btn-success shadow-lg" : "shadow-sm"} w-100`}
+                    style={{ height: "60px", fontSize: "18px", fontWeight: "bold" }}
                     onClick={() => handleSelect(id)}
                 >
                     {id}
@@ -53,34 +47,38 @@ export const Bitcoin = ({ onSelectionChange }) => {
     };
 
     return (
-        <div className="text-center">
-            <h1>Selecciona tus numeros</h1>
-            <div
-                className="d-flex flex-wrap justify-content-center"
-                style={{ maxWidth: "320px", margin: "auto" }}
-            >
+        <div className="container text-center py-4">
+            <h1 className="fw-bold mb-4" style={{ fontSize: "3rem" }}>
+                Reto ultra Millonario
+            </h1>
+            <h1 className="fw-bold text-primary mb-4" style={{ fontSize: "2rem" }}>
+                ¡Selecciona tus números de la suerte!
+            </h1>
+            <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(5, 1fr)", maxWidth: "400px", margin: "0 auto" }}>
                 {renderButtons()}
             </div>
-            <button
-                className="btn btn-warning mt-3"
-                onClick={handleRandomSelect}
-                disabled={selectedBitcoin.length === 14}
-            >
-                Selección Aleatoria
-            </button>
-            <button
-                className="btn btn-danger mt-3 mx-2"
-                onClick={clearSelection}
-                disabled={selectedBitcoin.length === 0}
-            >
-                Borrar Selección
-            </button>
-            <button
-                className="btn btn-success mt-3 mx-2"
-                disabled={selectedBitcoin.length !== 14}
-            >
-                Confirmar Selección
-            </button>
+            <div className="mt-4">
+                <button
+                    className="btn btn-warning text-white mx-2"
+                    onClick={handleRandomSelect}
+                    disabled={selectedBitcoin.length === 14}
+                >
+                    Selección Aleatoria
+                </button>
+                <button
+                    className="btn btn-danger text-white mx-2"
+                    onClick={clearSelection}
+                    disabled={selectedBitcoin.length === 0}
+                >
+                    Borrar Selección
+                </button>
+                <button
+                    className="btn btn-success text-white mx-2"
+                    disabled={selectedBitcoin.length !== 14}
+                >
+                    Confirmar Selección
+                </button>
+            </div>
         </div>
     );
 };

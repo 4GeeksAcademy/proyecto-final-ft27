@@ -28,7 +28,7 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Bitcoin />} path="/bitcoin" />
-                        <Route element={<Dollar />} path="/Dollar" />
+                        <Route element={<Dollar />} path="/dollar" />
                         <Route element={<Instructions />} path="/instructions" />
                         <Route element={<Results />} path="/results" />
                         <Route element={<Faq />} path="/faq" />
