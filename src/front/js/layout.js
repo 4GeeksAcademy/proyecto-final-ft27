@@ -14,6 +14,8 @@ import { Instructions } from "./pages/instructions";
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
 import { Results } from "./pages/resultados";
+import WinnersPage from "./pages/WinnersPage";
+import LiveDrawsPage from "./pages/LiveDrawsPage";
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -26,6 +28,8 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
+                        <Route element={<LiveDrawsPage />} path="/live" />
+                        <Route element={<WinnersPage />} path="/winners" />
                         <Route element={<Home />} path="/" />
                         <Route element={<Bitcoin />} path="/bitcoin" />
                         <Route element={<Dollar />} path="/dollar" />

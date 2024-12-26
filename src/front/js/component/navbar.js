@@ -80,7 +80,7 @@ export const Navbar = () => {
             </button>
             <ul className="dropdown-menu dropdown-menu-end">
               <li>
-                <Link className="dropdown-item" to="/live-draws">
+                <Link className="dropdown-item" to="/live">
                   Sorteos en vivo!
                 </Link>
               </li>
