@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Instructions = () => {
     return (
         <div className="container mt-5">
             <div className="text-center">
-                <h1 className="mb-5 text-primary fw-bold">Reglas del Juego</h1>
+                <h2 className="mb-5 text-primary fw-bold">Reglas del Juego</h2>
                 <div className="card shadow-lg mx-auto" style={{ maxWidth: "700px" }}>
                     <div className="card-body">
                         <h3 className="mb-4 text-secondary border-bottom pb-2">Objetivo del Juego:</h3>
@@ -35,6 +36,9 @@ export const Instructions = () => {
                             Al participar, confirmas que eres mayor de edad y que entiendes los términos y condiciones del juego.
                         </p>
                     </div>
+                </div>
+                <div className="text-center mt-4 mb-4">
+                    <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
                 </div>
             </div>
         </div>

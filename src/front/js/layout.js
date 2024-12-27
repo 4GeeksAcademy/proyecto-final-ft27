@@ -6,10 +6,11 @@ import { BackendURL } from "./component/backendURL";
 import { Bitcoin } from "./pages/bitcoin";
 import { Home } from "./pages/home";
 import { Faq } from "./pages/faq";
-import { Ley20393 } from "./pages/ley20393"; // Add this import
+import { Ley20393 } from "./pages/ley20393"; 
 import injectContext from "./store/appContext";
 import { Dollar } from "./pages/dollar";
 import { Instructions } from "./pages/instructions";
+import { NotFound } from "./pages/NotFound"
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
@@ -37,7 +38,7 @@ const Layout = () => {
                         <Route element={<Results />} path="/results" />
                         <Route element={<Faq />} path="/faq" />
                         <Route element={<Ley20393 />} path="/ley20393" /> 
-                        <Route path="*" element={<h1>Not found!</h1>} />
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

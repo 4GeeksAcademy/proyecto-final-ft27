@@ -1,0 +1,19 @@
+
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    font-size: 6rem;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #6c757d;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}

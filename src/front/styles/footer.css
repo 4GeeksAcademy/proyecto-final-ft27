@@ -1,0 +1,22 @@
+.footer {
+    border-top: 5px solid #ffc107; 
+}
+
+.footer p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.footer i {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.footer i:hover {
+    transform: scale(1.2);
+    color: #f8f9fa; 
+}
+
+.footer .small {
+    font-size: 0.8rem;
+    color: #adb5bd; 
+}

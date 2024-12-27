@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 export const Dollar = ({ onSelectionChange }) => {
@@ -8,8 +9,8 @@ export const Dollar = ({ onSelectionChange }) => {
         const updatedSelection = selectedDollar.includes(id)
             ? selectedDollar.filter((item) => item !== id)
             : selectedDollar.length < 14
-            ? [...selectedDollar, id]
-            : selectedDollar;
+                ? [...selectedDollar, id]
+                : selectedDollar;
 
         setSelectedDollar(updatedSelection);
         onSelectionChange(updatedSelection, "dollar");
@@ -48,7 +49,7 @@ export const Dollar = ({ onSelectionChange }) => {
 
     return (
         <div className="container text-center py-4">
-             <h1 className="fw-bold mb-4" style={{ fontSize: "3rem" }}>
+            <h1 className="fw-bold mb-4" style={{ fontSize: "3rem" }}>
                 Carrera del Dinero
             </h1>
             <h1 className="fw-bold text-info mb-4" style={{ fontSize: "2rem" }}>
@@ -78,6 +79,9 @@ export const Dollar = ({ onSelectionChange }) => {
                 >
                     Confirmar Selección
                 </button>
+            </div>
+            <div className="text-center mt-4 mb-4">
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
             </div>
         </div>
     );

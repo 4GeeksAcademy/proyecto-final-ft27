@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../../styles/ley.css";
 
 export const Ley20393 = () => {
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4">Responsabilidad Penal de las Personas Jurídicas</h2>
+            <h2 className="text-center mb-4 text-primary">Responsabilidad Penal de las Personas Jurídicas</h2>
             
             <div className="text-justify mb-4">
                 <p>
@@ -16,10 +17,10 @@ export const Ley20393 = () => {
                 </p>
 
                 <p>
-                    Toda denuncia efectuada por este canal será recibida por el Encargado de Prevención de Delitos
+                    Toda denuncia efectuada por este canal será recibida por el Encargado de Prevención de Delitos.
                 </p>
 
-                <h4 className="mt-4 mb-3">¿Qué información debe contener la denuncia?</h4>
+                <h4 className="mt-4 mb-3 text-primary">¿Qué información debe contener la denuncia?</h4>
                 <ul className="list-unstyled">
                     <li className="mb-2">• Indicar si desea efectuar la denuncia de forma anónima o en caso contrario identificarse.</li>
                     <li className="mb-2">• Indicar si es o no colaborador de Lotería.</li>
@@ -32,7 +33,7 @@ export const Ley20393 = () => {
             </div>
 
             <div className="text-center">
-                <Link to="/" className="btn btn-primary mt-4">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg mt-4">VOLVER</Link>
             </div>
         </div>
     );

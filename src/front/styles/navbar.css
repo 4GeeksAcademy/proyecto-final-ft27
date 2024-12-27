@@ -1,0 +1,74 @@
+.navbar {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: #fff;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.navbar-toggler-icon {
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.navbar-nav .dropdown-menu {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.navbar-nav .nav-item .btn-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.navbar-nav .nav-item .btn-link:hover {
+    color: #ffc107;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.btn-light:hover {
+    background-color: #e2e6ea;
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-header .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: none;
+}
+
+.modal-footer a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.modal-footer a:hover {
+    text-decoration: underline;
+}

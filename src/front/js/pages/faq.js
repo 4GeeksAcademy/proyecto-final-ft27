@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "../../styles/faq.css";
 
 export const Faq = () => {
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4">Preguntas Frecuentes</h2>
+            <h2 className="text-center mb-4 text-primary">Preguntas Frecuentes</h2>
             <div className="accordion" id="faqAccordion">
                 {faqData.map((item, index) => (
                     <div className="accordion-item" key={index}>
@@ -33,7 +34,7 @@ export const Faq = () => {
                 ))}
             </div>
             <div className="text-center mt-4 mb-4">
-                <Link to="/" className="btn btn-primary">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
             </div>
         </div>
     );

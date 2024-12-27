@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const Results = () => {
-    const playerNumbers = [3, 5, 8, 10, 12, 15, 17, 18, 19, 21, 22, 23, 24, 25]; // Ejemplo del jugador
-    const winningNumbers = [5, 10, 15, 17, 19, 21, 23, 25, 1, 2, 4, 6, 9, 11]; // Ejemplo ganadores
-    const prize = "5,000 USD"; // Premio ficticio
+    const playerNumbers = [3, 5, 8, 10, 12, 15, 17, 18, 19, 21, 22, 23, 24, 25]; 
+    const winningNumbers = [5, 10, 15, 17, 19, 21, 23, 25, 1, 2, 4, 6, 9, 11]; 
+    const prize = "5,000 USD"; 
 
     const calculateMatches = (player, winning) =>
         player.filter((number) => winning.includes(number));
@@ -11,7 +12,7 @@ export const Results = () => {
     const matchedNumbers = calculateMatches(playerNumbers, winningNumbers);
     return (
         <div className="container mt-5">
-            <h1 className="text-center mb-4 text-primary">Resultados del Jugador</h1>
+            <h2 className="text-center mb-4 text-primary">Resultados del Jugador</h2>
             <p className="text-center text-muted mb-5">
                 Aquí están tus resultados del último sorteo.
             </p>
@@ -86,6 +87,9 @@ export const Results = () => {
                         <p className="fs-5 text-danger">Lo sentimos, no ganaste esta vez.</p>
                     )}
                 </div>
+            </div>
+            <div className="text-center mt-4 mb-4">
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
             </div>
         </div>
     );

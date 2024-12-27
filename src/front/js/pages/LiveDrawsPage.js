@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LiveDrawsPage = () => {
     const liveDraws = [
@@ -18,7 +19,7 @@ const LiveDrawsPage = () => {
 
     return (
         <div className="container mt-5">
-            <h1 className="text-center mb-4 text-primary">Sorteos en Vivo</h1>
+            <h2 className="text-center mb-4 text-primary">Sorteos en Vivo</h2>
             <p className="text-center text-muted mb-5">
                 ¡No te pierdas la acción! Únete ahora a los sorteos que están en vivo.
             </p>
@@ -40,6 +41,9 @@ const LiveDrawsPage = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="text-center mt-4 mb-4">
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
             </div>
         </div>
     );

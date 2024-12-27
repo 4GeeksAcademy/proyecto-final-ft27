@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const WinnersPage = () => {
     const winners = [
@@ -42,7 +43,7 @@ const WinnersPage = () => {
 
     return (
         <div className="container mt-5">
-            <h1 className="text-center mb-4 text-primary">Ganadores Recientes</h1>
+            <h2 className="text-center mb-4 text-primary">Ganadores Recientes</h2>
             <p className="text-center text-muted mb-5">
                 Conoce a los afortunados que han hecho realidad sus sueños.
             </p>
@@ -63,6 +64,9 @@ const WinnersPage = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+            <div className="text-center mt-4 mb-4">
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
             </div>
         </div>
     );

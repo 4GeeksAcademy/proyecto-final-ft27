@@ -1,12 +1,23 @@
-/*
-    home.css: This website contains selectors only used in home.css
-
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
 .carousel-img {
-    object-fit: cover;  /* Esto asegura que la imagen se ajuste sin distorsionar */
-    height: 400px;       /* Puedes ajustar la altura según lo que necesites */
-  }
-  
+    object-fit: cover;
+    height: 500px;
+    border-radius: 10px;
+}
+
+.container {
+    max-width: 900px;
+}
+
+.btn {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.text-center span {
+    font-size: 1rem;
+    font-weight: 500;
+}
