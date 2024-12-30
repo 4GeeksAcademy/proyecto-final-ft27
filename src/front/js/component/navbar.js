@@ -77,7 +77,7 @@ export const Navbar = () => {
 
             <div className="dropdown">
               <button
-                className="btn btn-outline-light dropdown-toggle"
+                className="btn btn-light dropdown-toggle"
                 type="button"
                 id="menuDropdown"
                 data-bs-toggle="dropdown"
