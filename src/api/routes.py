@@ -5,7 +5,6 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from werkzeug.security import generate_password_hash, check_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -26,7 +25,7 @@ def handle_hello():
 @api.route('/')
 def home():
     users = User.query.all()  # Obtener todos los usuarios de la base de datos
-    users_data = [{"id": user.id, "username": user.username, "password_hash": user.password_hash} for user in users]
+    users_data = [{"id": user.id, "email": user.email, "password_hash": user.password_hash} for user in users]
     return jsonify({
         "message": "server running",
         "users": users_data
@@ -36,16 +35,16 @@ def home():
 @api.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if not username or not password:
-        return jsonify({"error": "Username and password are required"}), 400
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
 
-    if User.query.filter_by(username=username).first():
-        return jsonify({"error": "Username already exists"}), 400
+    if User.query.filter_by(email=email).first():
+        return jsonify({"error": "Email already exists"}), 400
 
-    new_user = User(username=username)
+    new_user = User(email=email)
     new_user.set_password(password)
 
     db.session.add(new_user)
@@ -57,16 +56,16 @@ def register():
 @api.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
-    if not username or not password:
-        return jsonify({"error": "Username and password are required"}), 400
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
 
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(email=email).first()
 
     if not user or not user.check_password(password):
-        return jsonify({"error": "Invalid username or password"}), 401
+        return jsonify({"error": "Invalid email or password"}), 401
 
     return jsonify({"message": "Login successful"}), 200
 
@@ -75,15 +74,16 @@ def login():
 def delete_user(id):
     # Buscar el usuario por su ID
     user = User.query.get(id)
-    
+
     if not user:
         return jsonify({"error": "User not found"}), 404
-    
+
     # Eliminar el usuario de la base de datos
     db.session.delete(user)
     db.session.commit()
-    
-    return jsonify({"message": f"User {user.username} deleted successfully"}), 200
+
+    return jsonify({"message": f"User with email {user.email} deleted successfully"}), 200
+
 
 
 
