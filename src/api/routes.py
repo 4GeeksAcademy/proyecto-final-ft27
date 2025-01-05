@@ -14,7 +14,6 @@ CORS(api)
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
-
     response_body = {
         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
     }
@@ -25,7 +24,7 @@ def handle_hello():
 @api.route('/')
 def home():
     users = User.query.all()  # Obtener todos los usuarios de la base de datos
-    users_data = [{"id": user.id, "email": user.email, "password_hash": user.password_hash} for user in users]
+    users_data = [{"id": user.id, "email": user.email} for user in users]  # Excluir password_hash
     return jsonify({
         "message": "server running",
         "users": users_data
@@ -83,6 +82,7 @@ def delete_user(id):
     db.session.commit()
 
     return jsonify({"message": f"User with email {user.email} deleted successfully"}), 200
+
 
 
 
