@@ -1,0 +1,13 @@
+/* register.css */
+.card {
+    border-radius: 8px;
+  }
+  
+  .card-header {
+    background-color: #007bff;
+  }
+  
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+  

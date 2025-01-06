@@ -5,32 +5,33 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 api = Blueprint('api', __name__)
-
-# Allow CORS requests to this API
 CORS(api)
 
+@api.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
 
-    return jsonify(response_body), 200
+    user = User.query.filter_by(email=email).first()
 
-# Ruta para comprobar si el servidor está funcionando y mostrar los usuarios
-@api.route('/')
-def home():
-    users = User.query.all()  # Obtener todos los usuarios de la base de datos
-    users_data = [{"id": user.id, "email": user.email} for user in users]  # Excluir password_hash
+    if not user or not user.check_password(password):
+        return jsonify({"error": "Invalid email or password"}), 401
+
+    # Create access token - Convert user.id to string
+    access_token = create_access_token(identity=str(user.id))
+
     return jsonify({
-        "message": "server running",
-        "users": users_data
-    })
+        "message": "Login successful",
+        "access_token": access_token
+    }), 200
 
-# Ruta para crear un nuevo usuario
 @api.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -49,43 +50,35 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "User created successfully"}), 201
+    # Create access token - Convert new_user.id to string
+    access_token = create_access_token(identity=str(new_user.id))
 
-# Ruta para iniciar sesion
-@api.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    return jsonify({
+        "message": "User created successfully",
+        "access_token": access_token
+    }), 201
 
-    if not email or not password:
-        return jsonify({"error": "Email and password are required"}), 400
+@api.route('/')
+def home():
+    # Convert the identity back to integer for database query
+    users = User.query.all()
+    users_data = [{"id": user.id, "email": user.email} for user in users]
+    return jsonify({
+        "message": "server running",
+        "users": users_data
+    })
 
-    user = User.query.filter_by(email=email).first()
-
-    if not user or not user.check_password(password):
-        return jsonify({"error": "Invalid email or password"}), 401
-
-    return jsonify({"message": "Login successful"}), 200
-
-# Ruta para eliminar un usuario
 @api.route('/delete_user/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    # Buscar el usuario por su ID
+    # Convert the identity back to integer
     user = User.query.get(id)
-
     if not user:
         return jsonify({"error": "User not found"}), 404
-
-    # Eliminar el usuario de la base de datos
     db.session.delete(user)
     db.session.commit()
-
-    return jsonify({"message": f"User with email {user.email} deleted successfully"}), 200
-
-
-
-
+    return jsonify({
+        "message": f"User with email {user.email} deleted successfully"
+    }), 200
 
 
 

@@ -11,6 +11,7 @@ import injectContext from "./store/appContext";
 import { Dollar } from "./pages/dollar";
 import { Instructions } from "./pages/instructions";
 import { NotFound } from "./pages/NotFound"
+import { Register } from "./pages/Register";
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
@@ -30,6 +31,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<LiveDrawsPage />} path="/live" />
+                        <Route element={<Register />} path="/register" />
                         <Route element={<WinnersPage />} path="/winners" />
                         <Route element={<Home />} path="/" />
                         <Route element={<Bitcoin />} path="/bitcoin" />

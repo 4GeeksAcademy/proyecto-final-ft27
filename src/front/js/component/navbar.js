@@ -162,7 +162,7 @@ export const Navbar = () => {
             </div>
             <div className="modal-footer text-center">
               <p className="w-100 m-0 text-dark">
-                ¿No tienes cuenta? <a href="#" className="text-primary">Regístrate aquí</a>
+                ¿No tienes cuenta? <Link to="/register" className="text-primary">Regístrate aquí</Link>
               </p>
             </div>
           </div>
