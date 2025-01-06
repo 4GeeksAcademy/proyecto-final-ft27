@@ -24,7 +24,6 @@ def login():
     if not user or not user.check_password(password):
         return jsonify({"error": "Invalid email or password"}), 401
 
-    # Create access token - Convert user.id to string
     access_token = create_access_token(identity=str(user.id))
 
     return jsonify({
@@ -50,7 +49,6 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    # Create access token - Convert new_user.id to string
     access_token = create_access_token(identity=str(new_user.id))
 
     return jsonify({
@@ -58,11 +56,36 @@ def register():
         "access_token": access_token
     }), 201
 
+@api.route('/select_numbers', methods=['POST'])
+@jwt_required()
+def select_numbers():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    if user.selected_numbers:
+        return jsonify({"error": "Numbers have already been selected."}), 400
+
+    data = request.get_json()
+    numbers = data.get('numbers', [])
+
+    if len(numbers) != 14 or any(n < 1 or n > 25 for n in numbers):
+        return jsonify({"error": "You must select exactly 14 numbers between 1 and 25."}), 400
+
+    user.set_numbers(numbers)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Numbers selected successfully",
+        "numbers": user.get_numbers()
+    }), 200
+
 @api.route('/')
 def home():
-    # Convert the identity back to integer for database query
     users = User.query.all()
-    users_data = [{"id": user.id, "email": user.email} for user in users]
+    users_data = [{"id": user.id, "email": user.email, "numbers": user.get_numbers()} for user in users]
     return jsonify({
         "message": "server running",
         "users": users_data
@@ -70,7 +93,6 @@ def home():
 
 @api.route('/delete_user/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    # Convert the identity back to integer
     user = User.query.get(id)
     if not user:
         return jsonify({"error": "User not found"}), 404
