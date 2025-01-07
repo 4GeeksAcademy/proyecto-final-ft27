@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
@@ -7,7 +7,15 @@ export const Bitcoin = () => {
     const [selectedBitcoin, setSelectedBitcoin] = useState([]);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!store.user) {
+            navigate('/');
+            return;
+        }
+    }, [store.user, navigate]);
 
     const handleSelect = (id) => {
         const updatedSelection = selectedBitcoin.includes(id)
@@ -24,6 +32,7 @@ export const Bitcoin = () => {
             .sort(() => Math.random() - 0.5)
             .slice(0, 14);
         setSelectedBitcoin(randomNumbers);
+        setError(null);
     };
 
     const clearSelection = () => {
@@ -34,10 +43,12 @@ export const Bitcoin = () => {
 
     const handleSubmit = async () => {
         try {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setError("Please login first");
-                navigate("/login");
+            setIsLoading(true);
+            setError(null);
+
+            if (!store.token) {
+                setError("Por favor, inicia sesión primero");
+                navigate("/");
                 return;
             }
 
@@ -45,7 +56,7 @@ export const Bitcoin = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${store.token}`
                 },
                 body: JSON.stringify({
                     game_type: "Reto ultra Millonario",
@@ -56,18 +67,22 @@ export const Bitcoin = () => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.error || "Error submitting numbers");
+                if (response.status === 401) {
+                    actions.logout();
+                    navigate("/");
+                    throw new Error("Sesión expirada. Por favor, inicia sesión nuevamente.");
+                }
+                throw new Error(data.error || "Error al enviar los números");
             }
 
-            setSuccess("Numbers selected successfully!");
-            setError(null);
-
-            // Optional: Redirect to results page after successful submission
+            setSuccess("¡Números seleccionados exitosamente!");
             setTimeout(() => navigate("/results"), 2000);
 
         } catch (error) {
             setError(error.message);
             setSuccess(null);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -78,20 +93,32 @@ export const Bitcoin = () => {
             </h1>
             
             {error && (
-                <div className="alert alert-danger" role="alert">
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
                     {error}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setError(null)}
+                        aria-label="Close"
+                    ></button>
                 </div>
             )}
             
             {success && (
-                <div className="alert alert-success" role="alert">
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
                     {success}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setSuccess(null)}
+                        aria-label="Close"
+                    ></button>
                 </div>
             )}
 
-            <h1 className="fw-bold text-primary mb-4" style={{ fontSize: "2rem" }}>
+            <h2 className="fw-bold text-primary mb-4" style={{ fontSize: "2rem" }}>
                 ¡Selecciona tus números de la suerte!
-            </h1>
+            </h2>
             
             <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(5, 1fr)", maxWidth: "400px", margin: "0 auto" }}>
                 {Array.from({ length: 25 }, (_, index) => {
@@ -103,7 +130,7 @@ export const Bitcoin = () => {
                             className={`btn rounded-circle ${isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"} w-100`}
                             style={{ height: "60px", fontSize: "18px", fontWeight: "bold" }}
                             onClick={() => handleSelect(id)}
-                            disabled={!isSelected && selectedBitcoin.length >= 14}
+                            disabled={!isSelected && selectedBitcoin.length >= 14 || isLoading}
                         >
                             {id}
                         </button>
@@ -115,28 +142,43 @@ export const Bitcoin = () => {
                 <button
                     className="btn btn-warning text-white mx-2"
                     onClick={handleRandomSelect}
-                    disabled={selectedBitcoin.length === 14}
+                    disabled={isLoading || selectedBitcoin.length === 14}
                 >
+                    <i className="fas fa-random me-2"></i>
                     Selección Aleatoria
                 </button>
                 <button
                     className="btn btn-danger text-white mx-2"
                     onClick={clearSelection}
-                    disabled={selectedBitcoin.length === 0}
+                    disabled={isLoading || selectedBitcoin.length === 0}
                 >
+                    <i className="fas fa-trash-alt me-2"></i>
                     Borrar Selección
                 </button>
                 <button
                     className="btn btn-success text-white mx-2"
                     onClick={handleSubmit}
-                    disabled={selectedBitcoin.length !== 14}
+                    disabled={isLoading || selectedBitcoin.length !== 14}
                 >
-                    Confirmar Selección
+                    {isLoading ? (
+                        <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Procesando...
+                        </>
+                    ) : (
+                        <>
+                            <i className="fas fa-check me-2"></i>
+                            Confirmar Selección
+                        </>
+                    )}
                 </button>
             </div>
 
             <div className="text-center mt-4 mb-4">
-                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">
+                    <i className="fas fa-home me-2"></i>
+                    VOLVER
+                </Link>
             </div>
         </div>
     );

@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
+import { ProtectedRoute } from "./component/ProtectedRoute";
+import { LoginRequiredModal } from "./component/LoginRequiredModal";
 
 import { Bitcoin } from "./pages/bitcoin";
 import { Home } from "./pages/home";
@@ -29,15 +31,37 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <LoginRequiredModal />
                     <Routes>
                         <Route element={<LiveDrawsPage />} path="/live" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<WinnersPage />} path="/winners" />
                         <Route element={<Home />} path="/" />
-                        <Route element={<Bitcoin />} path="/bitcoin" />
-                        <Route element={<Dollar />} path="/dollar" />
+                        <Route 
+                            path="/bitcoin" 
+                            element={
+                                <ProtectedRoute>
+                                    <Bitcoin />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/dollar" 
+                            element={
+                                <ProtectedRoute>
+                                    <Dollar />
+                                </ProtectedRoute>
+                            } 
+                        />
                         <Route element={<Instructions />} path="/instructions" />
-                        <Route element={<Results />} path="/results" />
+                        <Route 
+                            path="/results" 
+                            element={
+                                <ProtectedRoute>
+                                    <Results />
+                                </ProtectedRoute>
+                            } 
+                        />
                         <Route element={<Faq />} path="/faq" />
                         <Route element={<Ley20393 />} path="/ley20393" /> 
                         <Route path="*" element={<NotFound />} />

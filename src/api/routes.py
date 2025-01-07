@@ -13,39 +13,7 @@ CORS(api)
 def handle_error(error_message, status_code):
     return jsonify({"error": error_message}), status_code
 
-@api.route('/login', methods=['POST'])
-def login():
-    try:
-        data = request.get_json()
-        email = data.get('email', '').lower().strip()
-        password = data.get('password', '')
-
-        if not email or not password:
-            return handle_error("Email and password are required", 400)
-
-        user = User.query.filter_by(email=email).first()
-        if not user or not user.check_password(password):
-            return handle_error("Invalid email or password", 401)
-
-        # Update last login time
-        user.last_login = datetime.utcnow()
-        db.session.commit()
-
-        # Create access token with extended expiration
-        access_token = create_access_token(
-            identity=str(user.id),
-            expires_delta=timedelta(hours=24)
-        )
-
-        return jsonify({
-            "message": "Login successful",
-            "access_token": access_token,
-            "user": user.to_dict()
-        }), 200
-
-    except Exception as e:
-        return handle_error(str(e), 500)
-
+# New authentication routes
 @api.route('/register', methods=['POST'])
 def register():
     try:
@@ -65,7 +33,10 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        access_token = create_access_token(identity=str(new_user.id))
+        access_token = create_access_token(
+            identity=str(new_user.id),
+            expires_delta=timedelta(hours=24)
+        )
 
         return jsonify({
             "message": "User created successfully",
@@ -75,6 +46,52 @@ def register():
 
     except Exception as e:
         db.session.rollback()
+        return handle_error(str(e), 500)
+
+@api.route('/login', methods=['POST'])
+def login():
+    try:
+        data = request.get_json()
+        email = data.get('email', '').lower().strip()
+        password = data.get('password', '')
+
+        if not email or not password:
+            return handle_error("Email and password are required", 400)
+
+        user = User.query.filter_by(email=email).first()
+        if not user or not user.check_password(password):
+            return handle_error("Invalid email or password", 401)
+
+        user.last_login = datetime.utcnow()
+        db.session.commit()
+
+        access_token = create_access_token(
+            identity=str(user.id),
+            expires_delta=timedelta(hours=24)
+        )
+
+        return jsonify({
+            "message": "Login successful",
+            "access_token": access_token,
+            "user": user.to_dict()
+        }), 200
+
+    except Exception as e:
+        return handle_error(str(e), 500)
+
+@api.route('/user/profile', methods=['GET'])
+@jwt_required()
+def get_user_profile():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+        
+        if not user:
+            return handle_error("User not found", 404)
+
+        return jsonify(user.to_dict()), 200
+
+    except Exception as e:
         return handle_error(str(e), 500)
 
 @api.route('/games', methods=['GET'])
@@ -157,10 +174,6 @@ def select_numbers():
         if game.current_players >= game.max_players:
             return handle_error("This game is full", 400)
         
-        # Check if user already has numbers for this game
-        #if user.game_id == game.id and user.selected_numbers:
-        #    return handle_error("You have already selected numbers for this game", 400)
-        
         # Validate numbers
         if len(numbers) != 14:
             return handle_error("You must select exactly 14 numbers", 400)
@@ -174,7 +187,7 @@ def select_numbers():
         if len(set(numbers)) != len(numbers):
             return handle_error("Numbers must be unique", 400)
         
-        # Update user's game and numbers
+        # Create new ticket
         newticket= Ticket()
         newticket.user_id=user.id
         newticket.game_id = game.id
@@ -231,21 +244,6 @@ def get_winners(game_id):
     except Exception as e:
         return handle_error(str(e), 500)
 
-@api.route('/user/profile', methods=['GET'])
-@jwt_required()
-def get_user_profile():
-    try:
-        user_id = get_jwt_identity()
-        user = User.query.get(user_id)
-        
-        if not user:
-            return handle_error("User not found", 404)
-
-        return jsonify(user.to_dict()), 200
-
-    except Exception as e:
-        return handle_error(str(e), 500)
-
 @api.route('/user/games', methods=['GET'])
 @jwt_required()
 def get_user_games():
@@ -264,55 +262,6 @@ def get_user_games():
         }), 200
 
     except Exception as e:
-        return handle_error(str(e), 500)
-
-@api.route('/admin/draw_results', methods=['POST'])
-@jwt_required()
-def submit_draw_results():
-    try:
-        data = request.get_json()
-        game_id = data.get('game_id')
-        winning_numbers = data.get('winning_numbers')
-        
-        if not game_id or not winning_numbers:
-            return handle_error("Game ID and winning numbers are required", 400)
-
-        game = Game.query.get(game_id)
-        if not game:
-            return handle_error("Game not found", 404)
-
-        result = GameResult(
-            game_id=game_id,
-            draw_date=datetime.utcnow()
-        )
-        result.set_winning_numbers(winning_numbers)
-        db.session.add(result)
-
-        # Process winners
-        users = User.query.filter_by(game_id=game_id).all()
-        winners_count = 0
-        for user in users:
-            user_numbers = user.get_numbers()
-            if user_numbers:
-                matched = len(set(user_numbers) & set(winning_numbers))
-                if matched >= 10:  # Win condition
-                    winner = Winner(
-                        user_id=user.id,
-                        game_id=game_id,
-                        prize_amount=game.prize_amount / 100 * matched,
-                        matched_numbers=matched
-                    )
-                    db.session.add(winner)
-                    winners_count += 1
-        
-        db.session.commit()
-        return jsonify({
-            "message": "Draw results submitted successfully",
-            "winners_count": winners_count
-        }), 200
-
-    except Exception as e:
-        db.session.rollback()
         return handle_error(str(e), 500)
 
 @api.route('/delete_user/<int:id>', methods=['DELETE'])

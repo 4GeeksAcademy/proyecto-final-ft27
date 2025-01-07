@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
@@ -9,6 +9,13 @@ export const Dollar = () => {
     const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!store.user) {
+            navigate('/');
+            return;
+        }
+    }, [store.user, navigate]);
 
     const handleSelect = (id) => {
         if (selectedDollar.includes(id)) {
@@ -37,10 +44,9 @@ export const Dollar = () => {
             setIsLoading(true);
             setError(null);
 
-            const token = localStorage.getItem("token");
-            if (!token) {
+            if (!store.token) {
                 setError("Por favor, inicia sesión primero");
-                navigate("/login");
+                navigate("/");
                 return;
             }
 
@@ -48,7 +54,7 @@ export const Dollar = () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${store.token}`
                 },
                 body: JSON.stringify({
                     game_type: "Carrera del Dinero",
@@ -59,16 +65,16 @@ export const Dollar = () => {
             const data = await response.json();
 
             if (!response.ok) {
+                if (response.status === 401) {
+                    actions.logout();
+                    navigate("/");
+                    throw new Error("Sesión expirada. Por favor, inicia sesión nuevamente.");
+                }
                 throw new Error(data.error || "Error al enviar los números");
             }
 
-            setSuccess("¡Números seleccionados exitosamente!");
-            
-            // Opcional: Mostrar información adicional del sorteo
             const drawDate = new Date(data.draw_date);
             setSuccess(`¡Números seleccionados exitosamente! El sorteo será el ${drawDate.toLocaleDateString()}`);
-
-            // Redireccionar después de un tiempo
             setTimeout(() => navigate("/results"), 2000);
 
         } catch (error) {
@@ -77,31 +83,6 @@ export const Dollar = () => {
         } finally {
             setIsLoading(false);
         }
-    };
-
-    const renderNumbers = () => {
-        return Array.from({ length: 25 }, (_, index) => {
-            const number = index + 1;
-            const isSelected = selectedDollar.includes(number);
-            return (
-                <button
-                    key={`dollar-${number}`}
-                    className={`btn rounded-circle ${
-                        isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"
-                    } w-100`}
-                    style={{ 
-                        height: "60px", 
-                        fontSize: "18px", 
-                        fontWeight: "bold",
-                        transition: "all 0.3s ease"
-                    }}
-                    onClick={() => handleSelect(number)}
-                    disabled={!isSelected && selectedDollar.length >= 14}
-                >
-                    {number}
-                </button>
-            );
-        });
     };
 
     return (
@@ -149,7 +130,28 @@ export const Dollar = () => {
                             maxWidth: "400px", 
                             margin: "0 auto" 
                         }}>
-                        {renderNumbers()}
+                        {Array.from({ length: 25 }, (_, index) => {
+                            const number = index + 1;
+                            const isSelected = selectedDollar.includes(number);
+                            return (
+                                <button
+                                    key={`dollar-${number}`}
+                                    className={`btn rounded-circle ${
+                                        isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"
+                                    } w-100`}
+                                    style={{ 
+                                        height: "60px", 
+                                        fontSize: "18px", 
+                                        fontWeight: "bold",
+                                        transition: "all 0.3s ease"
+                                    }}
+                                    onClick={() => handleSelect(number)}
+                                    disabled={!isSelected && selectedDollar.length >= 14 || isLoading}
+                                >
+                                    {number}
+                                </button>
+                            );
+                        })}
                     </div>
 
                     <div className="mt-4">

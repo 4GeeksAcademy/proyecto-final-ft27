@@ -1,28 +1,56 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 import "../../styles/register.css";
 
 export const Register = () => {
+    const { actions } = useContext(Context);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
+        setIsLoading(true);
 
-        // Validación básica
-        if (password !== confirmPassword) {
-            alert("Las contraseñas no coinciden");
-            return;
+        try {
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                setError("Las contraseñas no coinciden");
+                return;
+            }
+
+            const response = await fetch(process.env.BACKEND_URL + "/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Auto login after successful registration
+                const loginSuccess = await actions.login(email, password);
+                if (loginSuccess) {
+                    navigate("/");
+                } else {
+                    setError("Registro exitoso pero hubo un error al iniciar sesión automáticamente");
+                }
+            } else {
+                setError(data.error || "Error en el registro");
+            }
+        } catch (error) {
+            setError("Error de conexión");
+        } finally {
+            setIsLoading(false);
         }
-
-        // Aquí podrías agregar lógica para enviar los datos al servidor
-        // Ejemplo: Enviar los datos de registro mediante un fetch o axios
-
-        alert("Registro exitoso");
-        navigate("/login"); // Redirigir al login después del registro
     };
 
     return (
@@ -34,6 +62,16 @@ export const Register = () => {
                             <h3>Crear una cuenta</h3>
                         </div>
                         <div className="card-body">
+                            {error && (
+                                <div className="alert alert-danger alert-dismissible fade show">
+                                    {error}
+                                    <button 
+                                        type="button" 
+                                        className="btn-close" 
+                                        onClick={() => setError(null)}
+                                    ></button>
+                                </div>
+                            )}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">
@@ -47,6 +85,7 @@ export const Register = () => {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
+                                        disabled={isLoading}
                                     />
                                 </div>
 
@@ -62,6 +101,8 @@ export const Register = () => {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
+                                        disabled={isLoading}
+                                        minLength="6"
                                     />
                                 </div>
 
@@ -77,13 +118,34 @@ export const Register = () => {
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                         required
+                                        disabled={isLoading}
+                                        minLength="6"
                                     />
                                 </div>
 
-                                <button type="submit" className="btn btn-primary w-100">
-                                    Registrarse
+                                <button 
+                                    type="submit" 
+                                    className="btn btn-primary w-100"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Registrando...
+                                        </>
+                                    ) : (
+                                        'Registrarse'
+                                    )}
                                 </button>
                             </form>
+                        </div>
+                        <div className="card-footer text-center">
+                            <p className="mb-0">
+                                ¿Ya tienes una cuenta? {' '}
+                                <Link to="/" className="text-primary">
+                                    Inicia sesión aquí
+                                </Link>
+                            </p>
                         </div>
                     </div>
                     <div className="text-center mt-4 mb-4">
@@ -94,3 +156,5 @@ export const Register = () => {
         </div>
     );
 };
+
+export default Register;
