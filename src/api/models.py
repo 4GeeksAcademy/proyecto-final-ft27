@@ -124,7 +124,7 @@ class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
-    selected_numbers = db.Column(db.String(50), nullable=True)
+    selected_numbers = db.Column(db.String(250), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
      # Relationships
