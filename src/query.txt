@@ -1,0 +1,4 @@
+insert into games(name, draw_date, prize_amount, max_players, current_players)
+VALUES
+("Reto ultra Millonario", "2024-01-15 00:00:00", 1000000, 1000, 0 ),
+("Carrera del Dinero", "2024-01-16 00:00:00", 1000000, 1000, 0 ),
