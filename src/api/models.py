@@ -167,5 +167,7 @@ class Ticket(db.Model):
             'selected_numbers': self.get_numbers(),
             'created_at': self.created_at.isoformat(),
             'user_email': self.user.email,
-            'game_name': self.game.name
+            'game_name': self.game.name,
+            "status" : self.status,
+            "total" : self.total
         }

@@ -1,3 +1,4 @@
+// pages/bitcoin.js
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
@@ -8,6 +9,7 @@ export const Bitcoin = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [ticketCreated, setTicketCreated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,6 +41,7 @@ export const Bitcoin = () => {
         setSelectedBitcoin([]);
         setError(null);
         setSuccess(null);
+        setTicketCreated(false);
     };
 
     const handleSubmit = async () => {
@@ -60,7 +63,9 @@ export const Bitcoin = () => {
                 },
                 body: JSON.stringify({
                     game_type: "Reto ultra Millonario",
-                    numbers: selectedBitcoin
+                    numbers: selectedBitcoin,
+                    total: 5.00, // Set your ticket price here
+                    preference: "bitcoin_game"
                 })
             });
 
@@ -76,7 +81,18 @@ export const Bitcoin = () => {
             }
 
             setSuccess("¡Números seleccionados exitosamente!");
-            setTimeout(() => navigate("/results"), 2000);
+            setTicketCreated(true);
+
+            // Redirect to results page after short delay
+            setTimeout(() => {
+                navigate("/results", { 
+                    state: { 
+                        ticketId: data.ticket_id,
+                        gameType: "Reto ultra Millonario",
+                        numbers: selectedBitcoin
+                    }
+                });
+            }, 1500);
 
         } catch (error) {
             setError(error.message);
@@ -130,7 +146,7 @@ export const Bitcoin = () => {
                             className={`btn rounded-circle ${isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"} w-100`}
                             style={{ height: "60px", fontSize: "18px", fontWeight: "bold" }}
                             onClick={() => handleSelect(id)}
-                            disabled={!isSelected && selectedBitcoin.length >= 14 || isLoading}
+                            disabled={!isSelected && selectedBitcoin.length >= 14 || isLoading || ticketCreated}
                         >
                             {id}
                         </button>
@@ -142,7 +158,7 @@ export const Bitcoin = () => {
                 <button
                     className="btn btn-warning text-white mx-2"
                     onClick={handleRandomSelect}
-                    disabled={isLoading || selectedBitcoin.length === 14}
+                    disabled={isLoading || selectedBitcoin.length === 14 || ticketCreated}
                 >
                     <i className="fas fa-random me-2"></i>
                     Selección Aleatoria
@@ -158,7 +174,7 @@ export const Bitcoin = () => {
                 <button
                     className="btn btn-success text-white mx-2"
                     onClick={handleSubmit}
-                    disabled={isLoading || selectedBitcoin.length !== 14}
+                    disabled={isLoading || selectedBitcoin.length !== 14 || ticketCreated}
                 >
                     {isLoading ? (
                         <>
@@ -173,6 +189,13 @@ export const Bitcoin = () => {
                     )}
                 </button>
             </div>
+
+            {ticketCreated && (
+                <div className="alert alert-info mt-4">
+                    <i className="fas fa-info-circle me-2"></i>
+                    Redirigiendo a la página de pago...
+                </div>
+            )}
 
             <div className="text-center mt-4 mb-4">
                 <Link to="/" className="btn btn-primary btn-lg shadow-lg">

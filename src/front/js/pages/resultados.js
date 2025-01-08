@@ -1,96 +1,199 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// pages/resultados.js
+import React, { useState, useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Results = () => {
-    const playerNumbers = [3, 5, 8, 10, 12, 15, 17, 18, 19, 21, 22, 23, 24, 25]; 
-    const winningNumbers = [5, 10, 15, 17, 19, 21, 23, 25, 1, 2, 4, 6, 9, 11]; 
-    const prize = "5,000 USD"; 
+    const { store } = useContext(Context);
+    const [ticket, setTicket] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const navigate = useNavigate();
 
-    const calculateMatches = (player, winning) =>
-        player.filter((number) => winning.includes(number));
+    useEffect(() => {
+        if (!store.token) {
+            navigate('/');
+            return;
+        }
+        fetchTicket();
+    }, [store.token]);
 
-    const matchedNumbers = calculateMatches(playerNumbers, winningNumbers);
+    const fetchTicket = async () => {
+        try {
+            const response = await fetch(
+                `${process.env.BACKEND_URL}/api/tickets/latest`,
+                {
+                    headers: {
+                        "Authorization": `Bearer ${store.token}`
+                    }
+                }
+            );
+            
+            if (!response.ok) {
+                throw new Error("Error fetching ticket information");
+            }
+            
+            const data = await response.json();
+            setTicket(data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handlePayment = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            
+            const response = await fetch(
+                `${process.env.BACKEND_URL}/api/tickets/payment`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${store.token}`
+                    },
+                    body: JSON.stringify({
+                        ticket_id: ticket.id,
+                        payment_method: "credit_card" // You can modify this based on your needs
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Error processing payment");
+            }
+
+            const data = await response.json();
+            setSuccess("Payment processed successfully!");
+            setTicket(data.ticket);
+            
+            // Optionally redirect to a success page or refresh the ticket
+            setTimeout(() => {
+                fetchTicket();
+            }, 2000);
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <div className="container mt-5">
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <p className="mt-2">Loading ticket information...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4 text-primary">Resultados del Jugador</h2>
-            <p className="text-center text-muted mb-5">
-                Aquí están tus resultados del último sorteo.
-            </p>
+            <h2 className="text-center mb-4 text-primary">Ticket Information</h2>
 
-            <div className="row">
-                <div className="col-md-6">
-                    <div className="card shadow-sm mb-4">
-                        <div className="card-header bg-primary text-white text-center">
-                            <h5 className="card-title">Tus Números Seleccionados</h5>
-                        </div>
-                        <div className="card-body text-center">
-                            <p className="card-text">
-                                {playerNumbers.map((num, index) => (
-                                    <span
-                                        key={index}
-                                        className="badge bg-secondary m-1 p-2 fs-6"
-                                    >
-                                        {num}
-                                    </span>
-                                ))}
-                            </p>
-                        </div>
+            {error && (
+                <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    {error}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setError(null)}
+                        aria-label="Close"
+                    ></button>
+                </div>
+            )}
+
+            {success && (
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    {success}
+                    <button 
+                        type="button" 
+                        className="btn-close" 
+                        onClick={() => setSuccess(null)}
+                        aria-label="Close"
+                    ></button>
+                </div>
+            )}
+
+            {ticket ? (
+                <div className="card shadow-sm mb-4">
+                    <div className="card-header bg-primary text-white">
+                        <h4 className="mb-0">Ticket Details</h4>
                     </div>
-                </div>
-
-                <div className="col-md-6">
-                    <div className="card shadow-sm mb-4">
-                        <div className="card-header bg-success text-white text-center">
-                            <h5 className="card-title">Números Ganadores</h5>
-                        </div>
-                        <div className="card-body text-center">
-                            <p className="card-text">
-                                {winningNumbers.map((num, index) => (
-                                    <span
-                                        key={index}
-                                        className="badge bg-success m-1 p-2 fs-6"
-                                    >
-                                        {num}
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h5 className="card-title">Game Information</h5>
+                                <p><strong>Game:</strong> {ticket.game_name}</p>
+                                <p><strong>Draw Date:</strong> {new Date(ticket.created_at).toLocaleDateString()}</p>
+                                <p><strong>Status:</strong> 
+                                    <span className={`badge ${ticket?.status === 'pending' ? 'bg-warning' : 'bg-success'} ms-2`}>
+                                        {ticket?.status}
                                     </span>
-                                ))}
-                            </p>
+                                </p>
+                                <p><strong>Total:</strong> ${ticket.total}</p>
+                            </div>
+                            <div className="col-md-6">
+                                <h5 className="card-title">Selected Numbers</h5>
+                                <div className="d-flex flex-wrap gap-2">
+                                    {ticket.selected_numbers.map((number, index) => (
+                                        <span 
+                                            key={index} 
+                                            className="badge bg-primary p-2"
+                                        >
+                                            {number}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <div className="card shadow-sm mb-4">
-                <div className="card-header bg-warning text-white text-center">
-                    <h5 className="card-title">Resultados</h5>
-                </div>
-                <div className="card-body text-center">
-                    <p className="card-text">
-                        Coincidencias:{" "}
-                        {matchedNumbers.length > 0 ? (
-                            matchedNumbers.map((num, index) => (
-                                <span
-                                    key={index}
-                                    className="badge bg-info m-1 p-2 fs-6"
+                        {ticket.status === 'pending' && (
+                            <div className="text-center mt-4">
+                                <button
+                                    className="btn btn-success btn-lg"
+                                    onClick={handlePayment}
+                                    disabled={isLoading}
                                 >
-                                    {num}
-                                </span>
-                            ))
-                        ) : (
-                            <span className="text-danger">Ninguna</span>
+                                    {isLoading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" />
+                                            Processing Payment...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="fas fa-credit-card me-2"></i>
+                                            Generate Preference
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         )}
-                    </p>
-                    {matchedNumbers.length > 0 ? (
-                        <p className="fs-5 text-success">
-                            ¡Felicidades! Has ganado <strong>{prize}</strong>.
-                        </p>
-                    ) : (
-                        <p className="fs-5 text-danger">Lo sentimos, no ganaste esta vez.</p>
-                    )}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div className="alert alert-info">
+                    No ticket information available.
+                </div>
+            )}
+
             <div className="text-center mt-4 mb-4">
-                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">
+                    <i className="fas fa-home me-2"></i>
+                    Back to Home
+                </Link>
             </div>
         </div>
     );
 };
+
+export default Results;

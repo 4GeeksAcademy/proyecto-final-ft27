@@ -1,3 +1,4 @@
+// pages/dollar.js
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
@@ -8,6 +9,7 @@ export const Dollar = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [ticketCreated, setTicketCreated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -37,6 +39,7 @@ export const Dollar = () => {
         setSelectedDollar([]);
         setError(null);
         setSuccess(null);
+        setTicketCreated(false);
     };
 
     const handleSubmit = async () => {
@@ -58,7 +61,9 @@ export const Dollar = () => {
                 },
                 body: JSON.stringify({
                     game_type: "Carrera del Dinero",
-                    numbers: selectedDollar.sort((a, b) => a - b)
+                    numbers: selectedDollar.sort((a, b) => a - b),
+                    total: 3.00, // Set your ticket price here
+                    preference: "dollar_game"
                 })
             });
 
@@ -73,9 +78,18 @@ export const Dollar = () => {
                 throw new Error(data.error || "Error al enviar los números");
             }
 
-            const drawDate = new Date(data.draw_date);
-            setSuccess(`¡Números seleccionados exitosamente! El sorteo será el ${drawDate.toLocaleDateString()}`);
-            setTimeout(() => navigate("/results"), 2000);
+            setSuccess("¡Números seleccionados exitosamente!");
+            setTicketCreated(true);
+
+            setTimeout(() => {
+                navigate("/results", { 
+                    state: { 
+                        ticketId: data.ticket_id,
+                        gameType: "Carrera del Dinero",
+                        numbers: selectedDollar
+                    }
+                });
+            }, 1500);
 
         } catch (error) {
             setError(error.message);
@@ -146,7 +160,7 @@ export const Dollar = () => {
                                         transition: "all 0.3s ease"
                                     }}
                                     onClick={() => handleSelect(number)}
-                                    disabled={!isSelected && selectedDollar.length >= 14 || isLoading}
+                                    disabled={!isSelected && selectedDollar.length >= 14 || isLoading || ticketCreated}
                                 >
                                     {number}
                                 </button>
@@ -159,7 +173,7 @@ export const Dollar = () => {
                             <button
                                 className="btn btn-warning text-white"
                                 onClick={handleRandomSelect}
-                                disabled={isLoading || selectedDollar.length === 14}
+                                disabled={isLoading || selectedDollar.length === 14 || ticketCreated}
                             >
                                 <i className="fas fa-random me-2"></i>
                                 Selección Aleatoria
@@ -177,7 +191,7 @@ export const Dollar = () => {
                             <button
                                 className="btn btn-success text-white"
                                 onClick={handleSubmit}
-                                disabled={isLoading || selectedDollar.length !== 14}
+                                disabled={isLoading || selectedDollar.length !== 14 || ticketCreated}
                             >
                                 {isLoading ? (
                                     <>
@@ -212,6 +226,13 @@ export const Dollar = () => {
                     )}
                 </div>
             </div>
+
+            {ticketCreated && (
+                <div className="alert alert-info mt-4">
+                    <i className="fas fa-info-circle me-2"></i>
+                    Redirigiendo a la página de pago...
+                </div>
+            )}
 
             <div className="text-center mt-4 mb-4">
                 <Link to="/" className="btn btn-primary btn-lg shadow-lg">
