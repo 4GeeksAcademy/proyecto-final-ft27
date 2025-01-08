@@ -17,7 +17,7 @@ import { Register } from "./pages/Register";
 
 import { Footer } from "./component/footer";
 import { Navbar } from "./component/navbar";
-import { Results } from "./pages/resultados";
+import { Tickets } from "./pages/tickets";
 import WinnersPage from "./pages/WinnersPage";
 import LiveDrawsPage from "./pages/LiveDrawsPage";
 
@@ -55,10 +55,10 @@ const Layout = () => {
                         />
                         <Route element={<Instructions />} path="/instructions" />
                         <Route 
-                            path="/results" 
+                            path="/tickets" 
                             element={
                                 <ProtectedRoute>
-                                    <Results />
+                                    <Tickets />
                                 </ProtectedRoute>
                             } 
                         />

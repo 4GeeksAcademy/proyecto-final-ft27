@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
-export const Results = () => {
+export const Tickets = () => {
     const { store } = useContext(Context);
     const [ticket, setTicket] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -196,4 +196,4 @@ export const Results = () => {
     );
 };
 
-export default Results;
+export default Tickets;

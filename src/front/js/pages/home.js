@@ -73,8 +73,8 @@ export const Home = () => {
             <div className="container mt-4">
                 <div className="row g-3">
                     <div className="col-12">
-                        <Link to="/results" className="btn btn-primary w-100 py-3 shadow-sm">
-                            <i className="fa-solid fa-chart-line me-2"></i>Resultados
+                        <Link to="/tickets" className="btn btn-primary w-100 py-3 shadow-sm">
+                            <i className="fa-solid fa-chart-line me-2"></i>Tickets
                         </Link>
                     </div>
                     <div className="col-lg-6">

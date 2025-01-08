@@ -10,7 +10,7 @@ export const LoginRequiredModal = () => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div className="modal-body">
-                        <p>Debes iniciar sesión para acceder a esta función.</p>
+                        <p>Para poder ingresar a esta pagina, debes de iniciar sesión</p>
                     </div>
                     <div className="modal-footer">
                         <button 

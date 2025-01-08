@@ -85,7 +85,7 @@ export const Bitcoin = () => {
 
             // Redirect to results page after short delay
             setTimeout(() => {
-                navigate("/results", { 
+                navigate("/tickets", { 
                     state: { 
                         ticketId: data.ticket_id,
                         gameType: "Reto ultra Millonario",
