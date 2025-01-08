@@ -179,7 +179,7 @@ export const Navbar = () => {
                                     ></button>
                                 </div>
                             )}
-                            <form onSubmit={handleLogin}>
+                            <form className="text-primary" onSubmit={handleLogin}>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">
                                         Email
@@ -225,7 +225,7 @@ export const Navbar = () => {
                             </form>
                         </div>
                         <div className="modal-footer">
-                            <p className="w-100 text-center">
+                            <p className="w-100 text-center text-primary">
                                 ¿No tienes cuenta? {' '}
                                 <button 
                                     className="btn btn-link p-0"
