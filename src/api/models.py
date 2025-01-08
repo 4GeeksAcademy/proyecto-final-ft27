@@ -5,6 +5,18 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
+def validate_numbers(numbers, expected_count=14, min_value=1, max_value=25):
+    if not isinstance(numbers, list):
+        raise ValueError("Numbers must be provided as a list")
+    if len(numbers) != expected_count:
+        raise ValueError(f"You must select exactly {expected_count} numbers")
+    if any(not isinstance(n, int) for n in numbers):
+        raise ValueError("All numbers must be integers")
+    if any(n < min_value or n > max_value for n in numbers):
+        raise ValueError(f"All numbers must be between {min_value} and {max_value}")
+    if len(set(numbers)) != len(numbers):
+        raise ValueError("Numbers must be unique")
+
 class Game(db.Model):
     __tablename__ = "games"
     id = db.Column(db.Integer, primary_key=True)
@@ -13,7 +25,6 @@ class Game(db.Model):
     prize_amount = db.Column(db.Float, nullable=False)
     max_players = db.Column(db.Integer, nullable=False)
     current_players = db.Column(db.Integer, default=0)
-
 
     def __repr__(self):
         return f'<Game {self.name}>'
@@ -45,7 +56,6 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    
     def to_dict(self):
         return {
             'id': self.id,
@@ -63,26 +73,10 @@ class GameResult(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_winning_numbers(self, numbers):
-        """Set the winning numbers for the game"""
-        if not isinstance(numbers, list):
-            raise ValueError("Numbers must be provided as a list")
-        
-        if len(numbers) != 14:
-            raise ValueError("There must be exactly 14 winning numbers")
-            
-        if any(not isinstance(n, int) for n in numbers):
-            raise ValueError("All numbers must be integers")
-            
-        if any(n < 1 or n > 25 for n in numbers):
-            raise ValueError("All numbers must be between 1 and 25")
-            
-        if len(set(numbers)) != len(numbers):
-            raise ValueError("Numbers must be unique")
-            
+        validate_numbers(numbers)
         self.winning_numbers = json.dumps(sorted(numbers))
 
     def get_winning_numbers(self):
-        """Get the winning numbers"""
         return json.loads(self.winning_numbers) if self.winning_numbers else []
 
     def to_dict(self):
@@ -103,7 +97,6 @@ class Winner(db.Model):
     matched_numbers = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    # Relationships
     user = db.relationship('User', backref='wins', lazy=True)
     game = db.relationship('Game', backref='winners', lazy=True)
 
@@ -118,42 +111,24 @@ class Winner(db.Model):
             'user_email': self.user.email,
             'game_name': self.game.name
         }
-    
+
 class Ticket(db.Model):
-    __tablename__="tickets"
+    __tablename__ = "tickets"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
     selected_numbers = db.Column(db.String(250), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-     # Relationships
     user = db.relationship('User', backref='ticket', lazy=True)
     game = db.relationship('Game', backref='ticket', lazy=True)
 
     def set_numbers(self, numbers):
-        """Set the selected numbers for the user"""
-        if not isinstance(numbers, list):
-            raise ValueError("Numbers must be provided as a list")
-        
-        if len(numbers) != 14:
-            raise ValueError("You must select exactly 14 numbers")
-        
-        if any(not isinstance(n, int) for n in numbers):
-            raise ValueError("All numbers must be integers")
-            
-        if any(n < 1 or n > 25 for n in numbers):
-            raise ValueError("All numbers must be between 1 and 25")
-            
-        if len(set(numbers)) != len(numbers):
-            raise ValueError("Numbers must be unique")
-            
+        validate_numbers(numbers)
         self.selected_numbers = json.dumps(sorted(numbers))
 
     def get_numbers(self):
-        """Get the user's selected numbers"""
         return json.loads(self.selected_numbers) if self.selected_numbers else []
-
 
     def to_dict(self):
         return {

@@ -303,3 +303,39 @@ def home():
 
     except Exception as e:
         return handle_error(str(e), 500)
+    
+@api.route('/add_game', methods=['POST'])
+def add_game():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        draw_date = data.get('draw_date')
+        prize_amount = data.get('prize_amount')
+        max_players = data.get('max_players')
+
+        if not name or not draw_date or not prize_amount or not max_players:
+            return handle_error("All fields (name, draw_date, prize_amount, max_players) are required", 400)
+
+        draw_date = datetime.fromisoformat(draw_date)
+        new_game = Game(
+            name=name,
+            draw_date=draw_date,
+            prize_amount=prize_amount,
+            max_players=max_players
+        )
+
+        db.session.add(new_game)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Game added successfully",
+            "game": new_game.to_dict()
+        }), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return handle_error(str(e), 500)
+
+
+
+
