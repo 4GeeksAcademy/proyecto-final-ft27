@@ -126,6 +126,7 @@ class Ticket(db.Model):
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
     selected_numbers = db.Column(db.String(250), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
+    
 
      # Relationships
     user = db.relationship('User', backref='ticket', lazy=True)
