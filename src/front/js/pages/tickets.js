@@ -96,7 +96,7 @@ export const Tickets = () => {
 
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4 text-primary">Tickets Pendientes</h2>
+            <h2 className="text-center mb-4 text-primary">Pagos Pendientes</h2>
 
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -170,7 +170,7 @@ export const Tickets = () => {
                                     ) : (
                                         <>
                                             <i className="fas fa-credit-card me-2"></i>
-                                            Generar pago
+                                            Generar Pago
                                         </>
                                     )}
                                 </button>
