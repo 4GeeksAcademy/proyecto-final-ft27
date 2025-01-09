@@ -1,0 +1,48 @@
+.ticket-card {
+  background-color: #f9f9f9;
+}
+
+.ticket-card-header {
+  font-weight: bold;
+  border-bottom: none;
+}
+
+.ticket-card-title {
+  color: #007bff;
+}
+
+.ticket-number-badge {
+  width: 50px;
+  height: 50px;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.ticket-number-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-number-badge:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.status-badge.bg-warning {
+  background-color: #ffc107;
+  color: #856404;
+}
+
+.status-badge.bg-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.text-muted {
+  font-size: 0.9rem;
+}

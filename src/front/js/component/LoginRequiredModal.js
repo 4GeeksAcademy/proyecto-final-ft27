@@ -1,29 +1,34 @@
 import React from "react";
+import "../../styles/LoginRequiredModal.css";
 
 export const LoginRequiredModal = () => {
     return (
-        <div className="modal fade" id="loginRequiredModal" tabIndex="-1">
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">Inicio de sesión requerido</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+        <div className="modal fade" id="loginRequiredModal" tabIndex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content border-0 shadow-lg">
+                    <div className="modal-header bg-primary text-white">
+                        <h5 className="modal-title w-100 text-center" id="loginRequiredModalLabel">Inicio de sesión requerido</h5>
+                        <button type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
-                    <div className="modal-body">
-                        <p>Para poder ingresar a esta pagina, debes de iniciar sesión</p>
+                    <div className="modal-body text-center">
+                        <p className="mb-4">Para poder ingresar a esta página, debes iniciar sesión.</p>
+                        <img
+                            src="https://via.placeholder.com/150"
+                            alt="Inicio de sesión requerido"
+                            className="img-fluid rounded-circle"
+                        />
                     </div>
-                    <div className="modal-footer">
-                        <button 
-                            type="button" 
-                            className="btn btn-secondary"
+                    <div className="modal-footer justify-content-center">
+                        <button
+                            type="button"
+                            className="btn btn-secondary px-4"
                             data-bs-dismiss="modal"
                         >
                             Cancelar
                         </button>
-                        <button 
-                            type="button" 
-                            className="btn btn-primary"
-                            data-bs-dismiss="modal"
+                        <button
+                            type="button"
+                            className="btn btn-primary px-4"
                             onClick={() => document.querySelector('[data-bs-target="#loginModal"]').click()}
                         >
                             Iniciar Sesión
@@ -32,5 +37,6 @@ export const LoginRequiredModal = () => {
                 </div>
             </div>
         </div>
+
     );
 };

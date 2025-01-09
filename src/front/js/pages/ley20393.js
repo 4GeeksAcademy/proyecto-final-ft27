@@ -6,7 +6,7 @@ export const Ley20393 = () => {
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4 text-primary">Responsabilidad Penal de las Personas Jurídicas</h2>
-            
+
             <div className="text-justify mb-4">
                 <p>
                     Conforme a lo dispuesto en la Ley Nº 20.393 que establece la responsabilidad penal de las personas jurídicas para los delitos de: Lavado de Activos, Financiamiento del Terrorismo, Cohecho a funcionario público nacional y extranjero, Receptación, Administración Desleal, Negociación Incompatible, Apropiación Indebida, Corrupción entre Particulares, Contaminación de aguas, Comercialización de productos vedados, Pesca ilegal de recursos del fondo marino y Procesamiento, elaboración y almacenamiento de productos colapsados o sobreexplotados sin acreditar origen legal, Lotería de Concepción ha dispuesto para sus colaboradores, clientes y público en general los siguientes canales de denuncia, los que tienen como propósito el recibir información relevante respecto a cualquier hecho o situación irregular que tengan relación con los delitos antes descritos.
@@ -33,7 +33,10 @@ export const Ley20393 = () => {
             </div>
 
             <div className="text-center">
-                <Link to="/" className="btn btn-primary btn-lg shadow-lg mt-4">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">
+                    <i className="fas fa-home me-2"></i>
+                    VOLVER
+                </Link>
             </div>
         </div>
     );

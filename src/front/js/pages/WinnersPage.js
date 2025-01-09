@@ -66,7 +66,10 @@ const WinnersPage = () => {
                 ))}
             </div>
             <div className="text-center mt-4 mb-4">
-                <Link to="/" className="btn btn-primary btn-lg shadow-lg">VOLVER</Link>
+                <Link to="/" className="btn btn-primary btn-lg shadow-lg">
+                    <i className="fas fa-home me-2"></i>
+                    VOLVER
+                </Link>
             </div>
         </div>
     );

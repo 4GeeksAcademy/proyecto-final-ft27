@@ -2,6 +2,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/dollar.css";
 
 export const Dollar = () => {
     const { store, actions } = useContext(Context);
@@ -15,7 +16,6 @@ export const Dollar = () => {
     useEffect(() => {
         if (!store.user) {
             navigate('/');
-            return;
         }
     }, [store.user, navigate]);
 
@@ -29,8 +29,7 @@ export const Dollar = () => {
 
     const handleRandomSelect = () => {
         const numbers = Array.from({ length: 25 }, (_, i) => i + 1);
-        const shuffled = numbers.sort(() => Math.random() - 0.5);
-        const randomSelection = shuffled.slice(0, 14);
+        const randomSelection = numbers.sort(() => Math.random() - 0.5).slice(0, 14);
         setSelectedDollar(randomSelection);
         setError(null);
     };
@@ -62,7 +61,7 @@ export const Dollar = () => {
                 body: JSON.stringify({
                     game_type: "Carrera del Dinero",
                     numbers: selectedDollar.sort((a, b) => a - b),
-                    total: 3.00, // Set your ticket price here
+                    total: 3.00,
                     preference: "dollar_game"
                 })
             });
@@ -82,15 +81,14 @@ export const Dollar = () => {
             setTicketCreated(true);
 
             setTimeout(() => {
-                navigate("/tickets", { 
-                    state: { 
+                navigate("/tickets", {
+                    state: {
                         ticketId: data.ticket_id,
                         gameType: "Carrera del Dinero",
                         numbers: selectedDollar
                     }
                 });
             }, 1500);
-
         } catch (error) {
             setError(error.message);
             setSuccess(null);
@@ -101,16 +99,15 @@ export const Dollar = () => {
 
     return (
         <div className="container text-center py-4">
-            <h1 className="fw-bold mb-4" style={{ fontSize: "3rem" }}>
-                Carrera del Dinero
-            </h1>
+            <h1 className="fw-bold mb-4 text-primary display-4">Carrera Del Dinero</h1>
 
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i className="fas fa-exclamation-triangle me-2"></i>
                     {error}
-                    <button 
-                        type="button" 
-                        className="btn-close" 
+                    <button
+                        type="button"
+                        className="btn-close"
                         onClick={() => setError(null)}
                         aria-label="Close"
                     ></button>
@@ -119,48 +116,45 @@ export const Dollar = () => {
 
             {success && (
                 <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <i className="fas fa-check-circle me-2"></i>
                     {success}
-                    <button 
-                        type="button" 
-                        className="btn-close" 
+                    <button
+                        type="button"
+                        className="btn-close"
                         onClick={() => setSuccess(null)}
                         aria-label="Close"
                     ></button>
                 </div>
             )}
 
-            <div className="card shadow-sm mb-4">
+            <div className="card shadow-lg border-0 rounded-4 mb-4">
                 <div className="card-body">
-                    <h2 className="fw-bold text-primary mb-4">
-                        ¡Selecciona tus números de la suerte!
-                    </h2>
-                    <p className="text-muted mb-4">
-                        Selecciona 14 números entre 1 y 25
-                    </p>
+                    <h2 className="fw-bold text-primary mb-4">¡Selecciona tus números de la suerte!</h2>
+                    <p className="text-muted mb-4">Selecciona 14 números entre 1 y 25</p>
 
-                    <div className="d-grid gap-3" 
-                        style={{ 
-                            gridTemplateColumns: "repeat(5, 1fr)", 
-                            maxWidth: "400px", 
-                            margin: "0 auto" 
-                        }}>
+                    <div
+                        className="d-grid gap-3"
+                        style={{
+                            gridTemplateColumns: "repeat(5, 1fr)",
+                            maxWidth: "400px",
+                            margin: "0 auto",
+                        }}
+                    >
                         {Array.from({ length: 25 }, (_, index) => {
                             const number = index + 1;
                             const isSelected = selectedDollar.includes(number);
                             return (
                                 <button
                                     key={`dollar-${number}`}
-                                    className={`btn rounded-circle ${
-                                        isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"
-                                    } w-100`}
-                                    style={{ 
-                                        height: "60px", 
-                                        fontSize: "18px", 
+                                    className={`btn rounded-circle ${isSelected ? "btn-success shadow-lg" : "btn-primary shadow-sm"} w-100`}
+                                    style={{
+                                        height: "60px",
+                                        fontSize: "18px",
                                         fontWeight: "bold",
-                                        transition: "all 0.3s ease"
+                                        transition: "all 0.3s ease",
                                     }}
                                     onClick={() => handleSelect(number)}
-                                    disabled={!isSelected && selectedDollar.length >= 14 || isLoading || ticketCreated}
+                                    disabled={(!isSelected && selectedDollar.length >= 14) || isLoading || ticketCreated}
                                 >
                                     {number}
                                 </button>
@@ -210,13 +204,13 @@ export const Dollar = () => {
                 </div>
             </div>
 
-            <div className="card shadow-sm mb-4">
+            <div className="card shadow-lg border-0 rounded-4 mb-4">
                 <div className="card-body">
                     <h3 className="text-primary mb-3">Números Seleccionados</h3>
                     {selectedDollar.length > 0 ? (
                         <div className="d-flex flex-wrap justify-content-center gap-2">
-                            {selectedDollar.sort((a, b) => a - b).map(number => (
-                                <span key={`selected-${number}`} className="badge bg-success fs-6 p-2">
+                            {selectedDollar.sort((a, b) => a - b).map((number) => (
+                                <span key={`selected-${number}`} className="badge bg-success fs-6 p-3 rounded-circle">
                                     {number}
                                 </span>
                             ))}

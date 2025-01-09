@@ -20,6 +20,7 @@ import { Navbar } from "./component/navbar";
 import { Tickets } from "./pages/tickets";
 import WinnersPage from "./pages/WinnersPage";
 import LiveDrawsPage from "./pages/LiveDrawsPage";
+import { TicketsHistory } from "./pages/TicketsHistory"
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -59,6 +60,14 @@ const Layout = () => {
                             element={
                                 <ProtectedRoute>
                                     <Tickets />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/TicketsHistory" 
+                            element={
+                                <ProtectedRoute>
+                                    <TicketsHistory />
                                 </ProtectedRoute>
                             } 
                         />

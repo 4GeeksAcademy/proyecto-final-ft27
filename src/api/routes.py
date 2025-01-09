@@ -342,3 +342,31 @@ def home():
 
     except Exception as e:
         return handle_error(str(e), 500)
+    
+@api.route('/user/tickets', methods=['GET'])
+@jwt_required()
+def get_user_tickets():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+
+        if not user:
+            return handle_error("User not found", 404)
+
+        tickets = Ticket.query.filter_by(user_id=user_id).all()
+
+        if not tickets:
+            return jsonify({
+                "message": "No tickets found for this user",
+                "tickets": [],
+                "total_tickets": 0
+            }), 200
+
+        return jsonify({
+            "message": "Tickets retrieved successfully",
+            "tickets": [ticket.to_dict() for ticket in tickets],
+            "total_tickets": len(tickets)
+        }), 200
+
+    except Exception as e:
+        return handle_error(str(e), 500)

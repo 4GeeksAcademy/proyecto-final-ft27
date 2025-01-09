@@ -179,7 +179,7 @@ export const Navbar = () => {
                             </button>
                             <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="menuDropdown">
                                 <li>
-                                    <Link className="dropdown-item" to="">
+                                    <Link className="dropdown-item" to="/TicketsHistory">
                                         Mis Tickets
                                     </Link>
                                 </li>
