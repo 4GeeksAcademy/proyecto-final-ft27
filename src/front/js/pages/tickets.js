@@ -158,7 +158,7 @@ export const Tickets = () => {
 
                             <div className="text-center mt-4">
                                 <button
-                                    className="ticket-btn-lg btn btn-success btn-lg rounded-pill px-5"
+                                    className="ticket-btn-lg btn btn-primary btn-lg rounded-pill px-5"
                                     onClick={() => handlePayment(ticket.id)}
                                     disabled={isLoading}
                                 >
@@ -170,7 +170,7 @@ export const Tickets = () => {
                                     ) : (
                                         <>
                                             <i className="fas fa-credit-card me-2"></i>
-                                            Pagar
+                                            Generar pago
                                         </>
                                     )}
                                 </button>
