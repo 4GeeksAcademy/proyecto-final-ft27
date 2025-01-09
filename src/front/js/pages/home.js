@@ -74,7 +74,7 @@ export const Home = () => {
                 <div className="row g-3">
                     <div className="col-12">
                         <Link to="/tickets" className="btn btn-primary w-100 py-3 shadow-sm">
-                            <i class="fa-solid fa-money-bill"></i> Pago Pendiente
+                            <i class="fa-solid fa-money-bill"></i> Pagos Pendientes
                         </Link>
                     </div>
                     <div className="col-lg-6">

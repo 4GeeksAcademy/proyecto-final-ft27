@@ -21,6 +21,7 @@ import { Tickets } from "./pages/tickets";
 import WinnersPage from "./pages/WinnersPage";
 import LiveDrawsPage from "./pages/LiveDrawsPage";
 import { TicketsHistory } from "./pages/TicketsHistory"
+import { PayTicket } from "./pages/PayTicket"
 
 const Layout = () => {
     const basename = process.env.BASENAME || "";
@@ -60,6 +61,14 @@ const Layout = () => {
                             element={
                                 <ProtectedRoute>
                                     <Tickets />
+                                </ProtectedRoute>
+                            } 
+                        />
+                        <Route 
+                            path="/payticket" 
+                            element={
+                                <ProtectedRoute>
+                                    <PayTicket />
                                 </ProtectedRoute>
                             } 
                         />

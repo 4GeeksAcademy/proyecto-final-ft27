@@ -353,7 +353,7 @@ def get_user_tickets():
         if not user:
             return handle_error("User not found", 404)
 
-        tickets = Ticket.query.filter_by(user_id=user_id).all()
+        tickets = Ticket.query.filter_by(user_id=user_id).order_by(Ticket.id.asc()).all()
 
         if not tickets:
             return jsonify({
@@ -366,6 +366,64 @@ def get_user_tickets():
             "message": "Tickets retrieved successfully",
             "tickets": [ticket.to_dict() for ticket in tickets],
             "total_tickets": len(tickets)
+        }), 200
+
+    except Exception as e:
+        return handle_error(str(e), 500)
+    
+@api.route('/tickets/pending', methods=['GET'])
+@jwt_required()
+def get_pending_payments():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+
+        if not user:
+            return handle_error("User not found", 404)
+
+        # Obtener tickets con estado 'pending'
+        pending_tickets = Ticket.query.filter_by(user_id=user_id, status='pending').all()
+
+        if not pending_tickets:
+            return jsonify({
+                "message": "No pending payments found",
+                "tickets": [],
+                "total_pending": 0
+            }), 200
+
+        return jsonify({
+            "message": "Pending payments retrieved successfully",
+            "tickets": [ticket.to_dict() for ticket in pending_tickets],
+            "total_pending": len(pending_tickets)
+        }), 200
+
+    except Exception as e:
+        return handle_error(str(e), 500)
+
+@api.route('/tickets/paid', methods=['GET'])
+@jwt_required()
+def get_paid_payments():
+    try:
+        user_id = get_jwt_identity()
+        user = User.query.get(user_id)
+
+        if not user:
+            return handle_error("User not found", 404)
+
+        # Obtener tickets con estado 'paid'
+        paid_tickets = Ticket.query.filter_by(user_id=user_id, status='paid').all()
+
+        if not paid_tickets:
+            return jsonify({
+                "message": "No paid payments found",
+                "tickets": [],
+                "total_paid": 0
+            }), 200
+
+        return jsonify({
+            "message": "Paid payments retrieved successfully",
+            "tickets": [ticket.to_dict() for ticket in paid_tickets],
+            "total_paid": len(paid_tickets)
         }), 200
 
     except Exception as e:

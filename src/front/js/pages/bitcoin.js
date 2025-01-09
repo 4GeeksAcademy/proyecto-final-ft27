@@ -83,7 +83,7 @@ export const Bitcoin = () => {
             setTicketCreated(true);
 
             setTimeout(() => {
-                navigate("/tickets", {
+                navigate("/payticket", {
                     state: {
                         ticketId: data.ticket_id,
                         gameType: "Reto Ultra Millonario",

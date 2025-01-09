@@ -153,7 +153,7 @@ export const Navbar = () => {
                                             Cerrando sesión...
                                         </>
                                     ) : (
-                                        "Cerrar Sesión"
+                                        "Salir"
                                     )}
                                 </button>
                             </>

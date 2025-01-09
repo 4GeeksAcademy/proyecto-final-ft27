@@ -81,7 +81,7 @@ export const Dollar = () => {
             setTicketCreated(true);
 
             setTimeout(() => {
-                navigate("/tickets", {
+                navigate("/payticket", {
                     state: {
                         ticketId: data.ticket_id,
                         gameType: "Carrera del Dinero",
