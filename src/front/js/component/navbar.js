@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom"; // Importa useLocation
 import { Context } from "../store/appContext";
 import "../../styles/navbar.css";
+import logo from "../../img/logo_transparent_contrast.png";
 
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
@@ -73,8 +74,14 @@ export const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
             <div className="container">
-                <Link to="/" className="navbar-brand fw-bold">
-                    <i className="fas fa-ticket-alt me-2"></i>Lotería
+                <Link to="/" className="navbar-brand d-flex align-items-center fw-bold">
+                    <img
+                        src={logo}
+                        alt="LuckyWinner Logo"
+                        className="me-2"
+                        style={{ width: "40px", height: "40px" }}
+                    />
+                    LuckyWinner
                 </Link>
 
                 <button
