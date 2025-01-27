@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"; // Importa useLocation
+import { Link, useNavigate, useLocation } from "react-router-dom"; 
 import { Context } from "../store/appContext";
 import "../../styles/navbar.css";
 import logo from "../../img/logo_transparent_contrast.png";
@@ -7,7 +7,7 @@ import logo from "../../img/logo_transparent_contrast.png";
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
-    const location = useLocation(); // Hook para obtener la ruta actual
+    const location = useLocation(); 
     const [loginData, setLoginData] = useState({
         email: "",
         password: ""
@@ -23,12 +23,12 @@ export const Navbar = () => {
         }
     }, []);
 
-    // Cierra el modal cuando se navega a la página de registro
+    
     useEffect(() => {
         if (location.pathname === "/register") {
             modal?.hide();
         }
-    }, [location, modal]); // Se ejecuta cada vez que cambie la ruta
+    }, [location, modal]); 
 
     const handleInputChange = (e) => {
         setLoginData({
@@ -62,7 +62,7 @@ export const Navbar = () => {
     const handleLogout = async () => {
         setIsLoggingOut(true);
         try {
-            await actions.logout(); // Asegúrate de que `logout` sea una función asíncrona.
+            await actions.logout(); 
             navigate("/");
         } catch (error) {
             console.error("Error al cerrar sesión:", error);

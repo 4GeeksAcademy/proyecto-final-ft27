@@ -13,7 +13,7 @@ export const LoginRequiredModal = () => {
                     <div className="modal-body text-center">
                         <p className="mb-4">Para poder ingresar a esta página, debes iniciar sesión.</p>
                         <img
-                            src="https://via.placeholder.com/150"
+                            src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                             alt="Inicio de sesión requerido"
                             className="img-fluid rounded-circle"
                         />

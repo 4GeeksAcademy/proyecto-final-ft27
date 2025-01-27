@@ -35,7 +35,7 @@ export const Tickets = () => {
             }
 
             const data = await response.json();
-            setTickets(data.tickets); // Extraer y guardar solo la lista de tickets
+            setTickets(data.tickets); 
         } catch (err) {
             setError(err.message);
         } finally {
@@ -70,10 +70,9 @@ export const Tickets = () => {
             const data = await response.json();
             setSuccess("Payment processed successfully!");
 
-            // Redirigir a la página principal después de un pago exitoso
             setTimeout(() => {
-                navigate("/"); // Redirige a la página principal
-            }, 2000); // Espera 2 segundos antes de redirigir (para que el usuario vea el mensaje de éxito)
+                navigate("/"); 
+            }, 2000); 
         } catch (err) {
             setError(err.message);
         } finally {
@@ -86,9 +85,9 @@ export const Tickets = () => {
             <div className="container mt-5">
                 <div className="text-center">
                     <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        <span className="visually-hidden">Cargando...</span>
                     </div>
-                    <p className="mt-2">Loading tickets...</p>
+                    <p className="mt-2">Cargando...</p>
                 </div>
             </div>
         );

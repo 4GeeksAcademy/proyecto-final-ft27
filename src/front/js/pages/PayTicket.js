@@ -58,7 +58,7 @@ export const PayTicket = () => {
                     },
                     body: JSON.stringify({
                         ticket_id: ticket.id,
-                        payment_method: "credit_card" // Puedes modificarlo según lo que necesites
+                        payment_method: "credit_card" 
                     })
                 }
             );
@@ -71,12 +71,10 @@ export const PayTicket = () => {
             setSuccess("Payment processed successfully!");
             setTicket(data.ticket);
 
-            // Navegar a la página principal después de un pago exitoso
             setTimeout(() => {
-                navigate("/"); // Redirige a la página principal
-            }, 2000); // Espera 2 segundos antes de redirigir (para que el usuario vea el mensaje de éxito)
+                navigate("/"); 
+            }, 2000); 
 
-            // Opcionalmente, refrescar el ticket
             setTimeout(() => {
                 fetchTicket();
             }, 2000);

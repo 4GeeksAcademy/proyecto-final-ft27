@@ -35,7 +35,7 @@ export const TicketsHistory = () => {
 
             const data = await response.json();
 
-            // Verificar si el formato de datos es correcto
+            
             if (!Array.isArray(data.tickets)) {
                 throw new Error("Unexpected response format");
             }
@@ -53,9 +53,9 @@ export const TicketsHistory = () => {
             <div className="container mt-5">
                 <div className="text-center">
                     <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Loading...</span>
+                        <span className="visually-hidden">Cargando...</span>
                     </div>
-                    <p className="mt-2">Loading tickets history...</p>
+                    <p className="mt-2">Cargando...</p>
                 </div>
             </div>
         );
@@ -63,7 +63,7 @@ export const TicketsHistory = () => {
 
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4 text-primary">Historial de Tickets</h2>
+            <h2 className="text-center mb-4 text-primary">Historial de tus Tickets</h2>
 
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show" role="alert">

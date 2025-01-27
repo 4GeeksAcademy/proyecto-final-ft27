@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
@@ -6,8 +6,38 @@ import "../../styles/home.css";
 export const Home = () => {
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        if (!sessionStorage.getItem("ageVerified")) {
+            const modal = new bootstrap.Modal(document.getElementById("ageModal"));
+            modal.show();
+        }
+    }, []);
+
+    const handleAgeConfirmation = () => {
+        sessionStorage.setItem("ageVerified", "true");
+    };
+
     return (
         <>
+            <div className="modal fade" id="ageModal" tabIndex="-1" aria-labelledby="ageModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content shadow-lg rounded-4">
+                        <div className="modal-header bg-primary text-white text-center border-0">
+                            <h5 className="modal-title w-100 fw-bold" id="ageModalLabel">🔞 Verificación de Edad</h5>
+                        </div>
+                        <div className="modal-body text-center fs-5">
+                            <p className="mb-3">¿Eres mayor de edad para jugar a la lotería?</p>
+                            <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Age Verification" width="80" />
+                        </div>
+                        <div className="modal-footer border-0 d-flex justify-content-center">
+                            <button type="button" className="btn btn-primary px-4 fw-bold" data-bs-dismiss="modal" onClick={handleAgeConfirmation}>
+                                Sí, soy mayor
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="carouselExample" className="carousel slide mb-4" data-bs-ride="carousel">
                 <div className="carousel-inner">
                     <div className="carousel-item active">

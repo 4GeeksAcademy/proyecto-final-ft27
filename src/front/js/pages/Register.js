@@ -19,7 +19,6 @@ export const Register = () => {
         setIsLoading(true);
 
         try {
-            // Validate passwords match
             if (password !== confirmPassword) {
                 setError("Las contraseñas no coinciden");
                 return;
@@ -36,7 +35,6 @@ export const Register = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Auto login after successful registration
                 const loginSuccess = await actions.login(email, password);
                 if (loginSuccess) {
                     navigate("/");

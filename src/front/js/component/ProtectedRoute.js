@@ -7,7 +7,6 @@ export const ProtectedRoute = ({ children }) => {
     const location = useLocation();
 
     if (!store.user) {
-        // Show login required modal
         const loginRequiredModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
         loginRequiredModal.show();
         return <Navigate to="/" state={{ from: location }} replace />;

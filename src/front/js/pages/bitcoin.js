@@ -63,7 +63,7 @@ export const Bitcoin = () => {
                 body: JSON.stringify({
                     game_type: "Reto ultra Millonario",
                     numbers: selectedBitcoin.sort((a, b) => a - b),
-                    total: 5.00, // Set your ticket price here
+                    total: 5.00, 
                     preference: "bitcoin_game"
                 })
             });

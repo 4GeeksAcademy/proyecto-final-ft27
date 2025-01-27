@@ -21,7 +21,7 @@ export const Footer = () => {
                 </div>
                 <div className="text-center mt-4">
                     <p className="mb-0 small">
-                        © {new Date().getFullYear()} Lotería Mundial. Todos los derechos reservados.
+                        © {new Date().getFullYear()} LuckyWinner. Todos los derechos reservados.
                     </p>
                 </div>
             </div>
